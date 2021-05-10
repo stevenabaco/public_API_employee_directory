@@ -52,9 +52,11 @@ async function renderGalleryHTML(data) {
 		});
 	});
 }
+/******************************************* 
+*                   MODAL                  * 
+* ******************************************/
 
-// Render a Modal when an employee card is clicked
-// to show additional detailed information
+// Render a Modal with additional info when an employee card is clicked
 
 function renderModal(e) {
 	// Capture the the selected card info for dynamic input into Modal
@@ -77,11 +79,11 @@ function renderModal(e) {
 
 	console.log(employeeData);
 
-  // Format phone number to not have a dash.
-  // Found solution on stack overflow here https://stackoverflow.com/questions/8358084/regular-expression-to-reformat-a-us-phone-number-in-javascript;
-	
-  function formatPhoneNumber(phoneNumberString) {
-		var cleaned = (phoneNumberString).replace(/\D/g, '');
+	// Format phone number to not have a dash.
+	// Found solution on stack overflow here https://stackoverflow.com/questions/8358084/regular-expression-to-reformat-a-us-phone-number-in-javascript;
+
+	function formatPhoneNumber(phoneNumberString) {
+		var cleaned = phoneNumberString.replace(/\D/g, '');
 		var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
 		if (match) {
 			return '(' + match[1] + ') ' + match[2] + '-' + match[3];
@@ -90,7 +92,7 @@ function renderModal(e) {
 	}
 
 	// HTML to build the Modal
-  
+
 	const modalHTML = `
   <div class="modal-container">
                 <div class="modal">
@@ -111,4 +113,14 @@ function renderModal(e) {
   `;
 
 	document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+	// Add event handlers to Modal buttons
+	const closeModalBtn = document.getElementById('modal-close-btn');
+	closeModalBtn.addEventListener('click', () => {
+		const modal = document.querySelector('.modal');
+		closeModalBtn.parentElement.parentElement.remove();
+	});
 }
+
+
+
