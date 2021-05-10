@@ -1,9 +1,12 @@
 //Declare Global Variables
 const api = 'https://randomuser.me/api/?results=12&nat=us';
+const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery');
 let employees = [];
 
-fetch(api) // Fetch data from "Random User API"
+// Fetch Random User API for list of employees
+
+fetch(api)
 	.then(res => res.json()) // Parse data to JSON
 	.then(res => res.results)
 	.then(res => {
@@ -11,8 +14,20 @@ fetch(api) // Fetch data from "Random User API"
 		return res; // Return response so the next chained code can continue
 	}) // Extract just the results from response
 	.then(renderGalleryHTML)
-	.then(gallery.chil)
 	.catch(error => console.log('Sorry... There was an error', error)); // Catch for error handling
+
+//HTML code to create a search input box
+
+		const searchHTML = `
+      <form action="#" method="get">
+        <input type="search" id="search-input" class="search-input" placeholder="Search...">
+        <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+      </form>
+    `;
+
+    // Render searchHTML by injecting it into search container
+
+    searchContainer.insertAdjacentHTML('beforeend', searchHTML)
 
 async function renderGalleryHTML(data) {
 	// Dynamically add HTML to gallery section
@@ -52,9 +67,9 @@ async function renderGalleryHTML(data) {
 		});
 	});
 }
-/******************************************* 
-*                   MODAL                  * 
-* ******************************************/
+/*******************************************
+ *                   MODAL                  *
+ * ******************************************/
 
 // Render a Modal with additional info when an employee card is clicked
 
@@ -109,6 +124,10 @@ function renderModal(e) {
                         <p class="modal-text">${employeeStreetNumber} ${employeeStreetName}, ${employeeCity}, ${employeeState} ${employeePostcode}</p>
                         <p class="modal-text">Birthday: ${employeeBirthMonth}/${employeeBirthDay}/${employeeBirthYear}</p>
                     </div>
+                     <div class="modal-btn-container">
+                    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                    <button type="button" id="modal-next" class="modal-next btn">Next</button>
+                  </div>
                 </div>
   `;
 
@@ -121,6 +140,3 @@ function renderModal(e) {
 		closeModalBtn.parentElement.parentElement.remove();
 	});
 }
-
-
-
