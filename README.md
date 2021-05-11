@@ -11,8 +11,17 @@ To build the database we had to use a public API to grab the information for 12 
 #EXTRA FEATURES AND CUSTOMIZATION
 
 <ul>
+  <li>Added dynamic search as keys are entered instead of using submit</li>
   <li>Changed background color to be a darker grey since the trend seems to be more towards "dark mode" style.</li>
   <li>Adjusted heading title to be white with a soft blue glow</li>
-  <li>
+  <li>Added popup effect with shadow on hover for cards</li>
+  <li>Added rounding of corners effect of pop up for cards</li>
+</ul>
+
+# TOOL
+<ul>
+  <li>HTML</li>
+  <li>CSS</li>
+  <li>Javascript</li>
 </ul>
 
