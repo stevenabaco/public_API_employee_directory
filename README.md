@@ -2,13 +2,13 @@
 
 # <p align="center"><a href="https://teamtreehouse.com/techdegree/full-stack-javascript">TREEHOUSE - FULL STACK </a> TECHDEGREE 👍 </p>
 
-#PROJECT OVERVIEW
+## PROJECT OVERVIEW
 
 For this project I had to build an app for a fictional company called "Awesome Startup". The employees are distributed accross the United States and the company wanted a web app to be able to list all the employees and share contact information with each other. 
 
 To build the database we had to use a public API to grab the information for 12 random employees, and use that information to build a prototype for the employee directory web app.
 
-#EXTRA FEATURES AND CUSTOMIZATION
+## EXTRA FEATURES AND CUSTOMIZATION
 
 <ul>
   <li>Added dynamic search as keys are entered instead of using submit</li>
@@ -18,7 +18,7 @@ To build the database we had to use a public API to grab the information for 12 
   <li>Added rounding of corners effect of pop up for cards</li>
 </ul>
 
-## TOOLs
+## TOOLS
 <ul>
   <li>HTML</li>
   <li>CSS</li>
