@@ -19,20 +19,38 @@ fetch(api)
 	.catch(error => console.log('Sorry... There was an error', error)); // Catch for error handling
 
 //HTML code to create a search input box
-
 const searchHTML = `
       <form action="#" method="get">
         <input type="search" id="search-input" class="search-input" placeholder="Search...">
-        <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
       </form>
-    `;
+      `;
 
 // Render searchHTML by injecting it into search container
-
 searchContainer.insertAdjacentHTML('beforeend', searchHTML);
 
+// Logic for searching through employee database using search input
+function search(input) {
+	const found = [];
+	employees.forEach(employee => {
+		// Concatenate full name
+		const name = employee.name.first + employee.name.last;
+		// Check for user input value
+		if (name.toLowerCase().includes(input.toLowerCase())) {
+			found.push(employee);
+		}
+	});
+	gallery.innerHTML = ''; // Clear any rendered cards
+	renderGalleryHTML(found);
+}
+
+// Search input submit handler
+searchContainer.addEventListener('keyup', e => {
+	const searchInput = document.querySelector('#search-input');
+	search(searchInput.value);
+});
+
+// Inject gallery section HTML
 async function renderGalleryHTML(data) {
-	// Dynamically add HTML to gallery section
 	await data.forEach((employee, index) => {
 		// Assign variables to be used for dynamic content
 		const picture = employee.picture.large;
@@ -55,7 +73,6 @@ async function renderGalleryHTML(data) {
       </div>
     </div>
   `;
-
 		// Render html to selected DOM element
 		gallery.insertAdjacentHTML('beforeend', cardHTML);
 	});
@@ -66,9 +83,8 @@ async function renderGalleryHTML(data) {
 			let card = e.target.closest('.card');
 			modalIndex = +card.getAttribute('index');
 			renderModal(modalIndex);
-
 		});
-  });
+	});
 }
 /*******************************************
  *                   MODAL                  *
@@ -77,7 +93,6 @@ async function renderGalleryHTML(data) {
 // Render a Modal with additional info when an employee card is clicked
 
 function renderModal(index) {
-	console.log(index);
 	// Capture the the selected card info for dynamic input into Modal
 	let employee = employees[index];
 	const employeePicture = employee.picture.large;
@@ -138,26 +153,40 @@ function renderModal(index) {
 	const closeModalBtn = document.getElementById('modal-close-btn');
 	const modalPrevBtn = document.getElementById('modal-prev');
 	const modalNextBtn = document.getElementById('modal-next');
-  const cards = document.querySelectorAll('#gallery .card');
+	const cards = document.querySelectorAll('#gallery .card');
+	const cardIndex = document.querySelector('.card').getAttribute('index');
 
-  if (modalIndex == cards.length - 1) {
+	// Check to see if currently displayed card is the last one
+	if (modalIndex >= cards.length - 1) {
+		// Remove the next button if it's the last card
 		modalNextBtn.remove();
 	}
 
+	// Check to see if currently displayed card is the first one
+	if (modalIndex === 0) {
+		// Remove the next button if it's the last card
+		modalPrevBtn.remove();
+	}
 	// The close modal button
 	closeModalBtn.addEventListener('click', () => {
 		modalContainer.remove();
 	});
 
-	// The next employee button
+	// The next modal button
 	modalNextBtn.addEventListener('click', () => {
-		const cardIndex = document.querySelector('.card').getAttribute('index');
-		if (modalIndex < employees.length - 1) {
+		if (modalIndex < cards.length - 1) {
 			modalIndex += 1;
 			modalContainer.remove();
 			renderModal(modalIndex);
-    }
-    
-  });
-    
+		}
+	});
+
+	// The previous modal button
+	modalPrevBtn.addEventListener('click', () => {
+		if (modalIndex >= 1) {
+			modalIndex -= 1;
+			modalContainer.remove();
+			renderModal(modalIndex);
+		}
+	});
 }
