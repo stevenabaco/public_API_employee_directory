@@ -18,7 +18,7 @@ To build the database we had to use a public API to grab the information for 12 
   <li>Added rounding of corners effect of pop up for cards</li>
 </ul>
 
-# TOOL
+## TOOLs
 <ul>
   <li>HTML</li>
   <li>CSS</li>
