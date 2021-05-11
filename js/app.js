@@ -2,7 +2,9 @@
 const api = 'https://randomuser.me/api/?results=12&nat=us';
 const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery');
+
 let employees = [];
+let modalIndex = 0;
 
 // Fetch Random User API for list of employees
 
@@ -18,16 +20,16 @@ fetch(api)
 
 //HTML code to create a search input box
 
-		const searchHTML = `
+const searchHTML = `
       <form action="#" method="get">
         <input type="search" id="search-input" class="search-input" placeholder="Search...">
         <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
       </form>
     `;
 
-    // Render searchHTML by injecting it into search container
+// Render searchHTML by injecting it into search container
 
-    searchContainer.insertAdjacentHTML('beforeend', searchHTML)
+searchContainer.insertAdjacentHTML('beforeend', searchHTML);
 
 async function renderGalleryHTML(data) {
 	// Dynamically add HTML to gallery section
@@ -42,7 +44,7 @@ async function renderGalleryHTML(data) {
 
 		// HTML code to create a card element injected into index.html
 		const cardHTML = `
-    <div class="card" id="${index}">
+    <div class="card" index="${index}">
       <div class="card-img-container">
           <img class="card-img" src="${picture}" alt=" ${nameFirst} ${nameLast} profile picture">
       </div>
@@ -61,11 +63,12 @@ async function renderGalleryHTML(data) {
 	const cards = document.querySelectorAll('#gallery .card');
 	cards.forEach(card => {
 		card.addEventListener('click', e => {
-			renderModal(e);
+			let card = e.target.closest('.card');
+			modalIndex = +card.getAttribute('index');
+			renderModal(modalIndex);
 
-			console.log('Card clicked!', e.target.closest('.card'));
 		});
-	});
+  });
 }
 /*******************************************
  *                   MODAL                  *
@@ -73,26 +76,23 @@ async function renderGalleryHTML(data) {
 
 // Render a Modal with additional info when an employee card is clicked
 
-function renderModal(e) {
+function renderModal(index) {
+	console.log(index);
 	// Capture the the selected card info for dynamic input into Modal
-	const card = e.target.closest('.card');
-	const employeeNum = card.id;
-	const employeeData = employees[employeeNum];
-	const employeePicture = employeeData.picture.large;
-	const employeeNameFirst = employeeData.name.first;
-	const employeeNameLast = employeeData.name.last;
-	const employeeEmail = employeeData.email;
-	const employeeStreetNumber = employeeData.location.street.number;
-	const employeeStreetName = employeeData.location.street.name;
-	const employeeCity = employeeData.location.city;
-	const employeeState = employeeData.location.state;
-	const employeePostcode = employeeData.location.postcode;
-	const employeePhone = employeeData.cell;
-	const employeeBirthMonth = new Date(employeeData.dob.date).getMonth() + 1;
-	const employeeBirthDay = new Date(employeeData.dob.date).getDate();
-	const employeeBirthYear = new Date(employeeData.dob.date).getFullYear();
-
-	console.log(employeeData);
+	let employee = employees[index];
+	const employeePicture = employee.picture.large;
+	const employeeNameFirst = employee.name.first;
+	const employeeNameLast = employee.name.last;
+	const employeeEmail = employee.email;
+	const employeeStreetNumber = employee.location.street.number;
+	const employeeStreetName = employee.location.street.name;
+	const employeeCity = employee.location.city;
+	const employeeState = employee.location.state;
+	const employeePostcode = employee.location.postcode;
+	const employeePhone = employee.cell;
+	const employeeBirthMonth = new Date(employee.dob.date).getMonth() + 1;
+	const employeeBirthDay = new Date(employee.dob.date).getDate();
+	const employeeBirthYear = new Date(employee.dob.date).getFullYear();
 
 	// Format phone number to not have a dash.
 	// Found solution on stack overflow here https://stackoverflow.com/questions/8358084/regular-expression-to-reformat-a-us-phone-number-in-javascript;
@@ -134,9 +134,30 @@ function renderModal(e) {
 	document.body.insertAdjacentHTML('beforeend', modalHTML);
 
 	// Add event handlers to Modal buttons
+	const modalContainer = document.querySelector('.modal-container');
 	const closeModalBtn = document.getElementById('modal-close-btn');
+	const modalPrevBtn = document.getElementById('modal-prev');
+	const modalNextBtn = document.getElementById('modal-next');
+  const cards = document.querySelectorAll('#gallery .card');
+
+  if (modalIndex == cards.length - 1) {
+		modalNextBtn.remove();
+	}
+
+	// The close modal button
 	closeModalBtn.addEventListener('click', () => {
-		const modal = document.querySelector('.modal');
-		closeModalBtn.parentElement.parentElement.remove();
+		modalContainer.remove();
 	});
+
+	// The next employee button
+	modalNextBtn.addEventListener('click', () => {
+		const cardIndex = document.querySelector('.card').getAttribute('index');
+		if (modalIndex < employees.length - 1) {
+			modalIndex += 1;
+			modalContainer.remove();
+			renderModal(modalIndex);
+    }
+    
+  });
+    
 }
