@@ -12,6 +12,7 @@ To build the database we had to use a public API to grab the information for 12 
 
 <ul>
   <li>Changed background color to be a darker grey since the trend seems to be more towards "dark mode" style.</li>
-  <li>Adjust heading title to be white with a soft blue glow</li>
+  <li>Adjusted heading title to be white with a soft blue glow</li>
+  <li>
 </ul>
 
